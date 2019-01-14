@@ -1,0 +1,42 @@
+<div class="table">
+  <ul class="bg-background-lighten mt-3 m-3 container">
+    <li class="row bg-background-darken p-2 border flex-nowrap">
+      <div class="col cursor-pointer" (click)="sort()">
+        SiteName
+        <i class="material-icons mat-size-1" *ngIf="sortState===0; else sortElm">sort</i>
+        <ng-template #sortElm>
+          <i class="material-icons mat-size-1">
+            {{sortState === 1 ? 'arrow_upward':'arrow_downward'}}
+          </i>
+        </ng-template>
+      </div>
+      <div class="col">
+        Pollutant
+      </div>
+      <div class="col">
+        Status
+      </div>
+      <div class="col">
+        PM2.5_AVG
+      </div>
+    </li>
+    <ng-container *ngIf="apiGet$ | async as list">
+      <li class="row p-2 border flex-nowrap" *ngFor="let item of list">
+        <div class="col">
+          {{item.SiteName}}
+        </div>
+        <div class="col">
+          {{item.Pollutant}}
+
+        </div>
+        <div class="col">
+          {{item.Status}}
+
+        </div>
+        <div class="col">
+          {{item['PM2.5_AVG']}}
+        </div>
+      </li>
+    </ng-container>
+  </ul>
+</div>

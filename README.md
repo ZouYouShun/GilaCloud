@@ -1,27 +1,76 @@
 # Gilacloud
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.1.0.
+# Part 2
 
-## Development server
+# Database
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+mongoDB
 
-## Code scaffolding
+### MODEL
+```ts
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+interface UserModel {
+  firstName: string;
+  lastName: string;
+  password: string;
+  email: string;
+  photoURL: string;
+}
 
-## Build
+interface CoffeeModel{
+  id: string;
+  creator: UserModel;
+  title:string;
+  price:number;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+interface OrderModel{
+  id: string;
+  creator: UserModel;
+  coffees: OrderCoffeeModel[];
+  createdAt: Date;
+  updatedAt: Date;
+}
 
-## Running unit tests
+interface OrderCoffeeModel{
+  id: string;
+  creator: UserModel;
+  // copy from coffee data, not releation
+  coffee: CoffeeModel & { amount:number; remark:string }; 
+  createdAt: Date;
+  updatedAt: Date;
+}
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```
+## Coffee
+| method | path | discription |
+|---|---|---|
+| GET | `api/coffee`| get all coffee data list |
+| GET | `api/coffee/{id}`| get coffee order data with id|
+| POST | `api/coffee`| add coffee data|
+| PATCH | `api/coffee/{id}`| update coffee data with id|
+| DELETE | `api/coffee/{id}`| update coffee data with id|
 
-## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+## Order
+### API
+| method | path | discription |
+|---|---|---|
+| GET | `api/order`| get all order data list |
+| GET | `api/order/{id}`| get order order data with id, provide query like below|
+| POST | `api/order`| add order data, when add order, send coffees data, add to OrderCoffeeModel, **and read the database price to set price, not use frontEnd send price to set price.**|
+| PATCH | `api/order/{id}`| update order data with id|
+| DELETE | `api/order/{id}`| update order data with id|
 
-## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+## OrderQuery
+```ts
+interface OrderQueryModel{
+  creatorId:string;
+  fromDateTime:Date;
+  toDateTime:Date;
+  
+}
+```
